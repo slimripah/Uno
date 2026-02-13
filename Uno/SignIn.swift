@@ -27,7 +27,9 @@ struct SignIn: View {
                     })
                     .toggleStyle(RememberStyle())
                     Spacer()
-                    Button(action: {}, label: {
+                    Button(action: {
+                        showForgotView.toggle()
+                    }, label: {
                         Text("Forget Password?").bold().font(.footnote)
                     })
                     .tint(.primary)
@@ -53,6 +55,10 @@ struct SignIn: View {
             .tint(.primary)
         }
         .padding()
+        .sheet(isPresented: $showForgotView, content: {
+            ForgotView()
+                .presentationDetents([.fraction(0.40)])
+        })
     }
 }
 

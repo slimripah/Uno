@@ -14,7 +14,7 @@ struct PasswordCheckField: View {
     @State var checkLetter = false
     @State var checkPunctuation = false
     @State var checkNumber = false
-    @State var checkPassword = false
+    @State var showPassword = false
     
     var progressColor:Color{
         let containsLetters = text.rangeOfCharacter(from: .letters) != nil
@@ -77,7 +77,32 @@ struct PasswordCheckField: View {
                     .foregroundStyle(showPassword ? .primary : .secondary)
                     .padding(15)
                     .contentShape(Rectangle())
+                    .onTapGesture {
+                        showPassword.toggle()
+                    }
+            }
+            VStack(alignment: .leading, spacing: 10) {
+                CheckText(text: "Minimum 8 characters", check: $checkMinChars)
+                CheckText(text: "At least one letter", check: $checkLetter)
+                CheckText(text: "(!@#$%*^&)", check: $checkPunctuation)
+                CheckText(text: "Number", check: $checkNumber)
             }
         }
+    }
+}
+
+#Preview {
+    PasswordCheckField()
+}
+
+struct CheckText: View {
+    let text:String
+    @Binding var check:Bool
+    var body: some View {
+        HStack {
+            Image(systemName: check ? "checkmark.circle.fill" : "circle").contentTransition(.symbolEffect)
+            Text(text)
+        }
+        .foregroundColor(check ? .white : .secondary)
     }
 }
